@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+
+<config>
+	<sections>
+		<general>
+			<groups>
+				<craftyclicksvalidate translate="label" module="craftyclicksvalidate">
+					<label>Crafty Clicks - Address Validate</label>
+					<sort_order>124</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>1</show_in_website>
+					<show_in_store>0</show_in_store>
+					<fields>
+						<active translate="label">
+							<label>Enabled</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>1</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</active>
+
+						<loading_image translate="label">
+							<label>Loading Image</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>12</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+							<comment>Here you can enter an image file name to use as the loading image while the address validation is working.</comment>
+						</loading_image>
+
+						<title translate="label">
+							<label>Title</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>35</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+							<comment>Title of the block.</comment>
+						</title>
+
+						<description_1 translate="label">
+							<label>Description</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>36</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+							<comment>Description of the block.</comment>
+						</description_1>
+
+						<description_2 translate="label">
+							<label>Sub-Description</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>37</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+							<comment>Sub-Description of the block.</comment>
+						</description_2>
+
+						<finish_text translate="label">
+							<label>Successful update text</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>38</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+							<comment>Text after successful update.</comment>
+						</finish_text>
+
+						<gmaps translate="label">
+							<label>Display Google Maps</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>40</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+							<comment>Display Google Maps. Required for free licensing.</comment>
+						</gmaps>
+
+						<region_dropdown translate="label">
+							<label>Region Drowdown Override</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>39</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+							<comment>Allow manual region entry of custom regions.</comment>
+						</region_dropdown>
+
+					</fields>
+                    <comment><![CDATA[<a href="http://www.craftyclicks.co.uk" target="_blank">Uk postcode lookup is also available on our website!</a>]]></comment>
+				</craftyclicksvalidate>
+			</groups>
+		</general>
+	</sections>
+</config>

@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!--
+ /**
+ * Crafty Clicks Postcode Lookup 
+ *
+ * @category     Extension
+ * @copyright    Copyright (c) 2009-2013 Crafty Clicks (http://www.craftyclicks.com)
+ * @author       Crafty Clicks
+ */ 
+ -->
+
+<layout>
+	<!-- Ajax Time -->
+	<craftyclicksvalidate_ajax_index>
+		<block type="craftyclicksvalidate/ajaxblock" name="root" template="path/template.phtml" />
+	</craftyclicksvalidate_ajax_index>
+
+	<checkout_onepage_success>
+		<reference name="head">
+			<block type="page/html" name="craftyclicks_postcheck" template="craftyclicksvalidate/post_checkout.phtml"/>	
+		</reference>
+	</checkout_onepage_success>
+</layout>

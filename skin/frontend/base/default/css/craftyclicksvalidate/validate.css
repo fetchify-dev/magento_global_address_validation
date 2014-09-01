@@ -1,0 +1,12 @@
+.crafty-maps-holder{ border: 1px solid #DBDBDB; padding: 10px; color: white;}
+#crafty-correct{ min-width: 365px; width: 50%; margin: auto; }
+#crafty-correct span{ padding: 5px; padding-left: 6px; padding-top: 0px; position: relative; top: -2px; font-style: italic;}
+#crafty-correct ul{ margin: 0px; padding: 0px; list-style: none;}
+#crafty-correct li{ text-align: left; padding: 5px; padding-left: 10px; font-size: 12px; background-color: #F4F4F4; clear: both;}
+#crafty-correct .correct-title{ float: left; padding-top: 10px;}
+#crafty-correct li:nth-child(odd){ background-color: #FBFBFB;}
+#crafty-maps-holder {min-width: 365px; width: 50%; height: 200px; margin: auto;}
+#button-crafty-modify{
+	margin-top: 10px;
+	margin-bottom: 10px;
+}

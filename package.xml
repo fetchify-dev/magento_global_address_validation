@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<package>
+    <name>Crafty_Clicks_International_Address_Validation</name>
+    <version>0.1.5</version>
+    <stability>stable</stability>
+    <license uri="http://www.opensource.org/licenses/osl-3.0.php">OSL v3.0</license>
+    <channel>community</channel>
+    <extends/>
+    <summary>International address validation based on google maps api.</summary>
+    <description>This is a free module for international address validation, based on google maps api.&#xD;
+&#xD;
+Upon completing a checkout, the shipping address gets validated, to ensure the existence of the location. In case the address cannot be confirmed, suggestions to fix the address will be shown, with the option to manually check and fix the address.</description>
+    <notes>Release History&#xD;
+v0.1.5&#xD;
+* Code clean up&#xD;
+v0.1.4&#xD;
+* Fix: better handling of region dropdowns&#xD;
+v0.1.3&#xD;
+* Fix: added check for google CDN state.&#xD;
+v0.1.2&#xD;
+* Stable release&#xD;
+v0.1.1&#xD;
+* Fix: some gmaps suggestions were considered premise level when they were not.&#xD;
+v0.1.0&#xD;
+* Initial Release</notes>
+    <authors><author><name>Crafty Clicks</name><user>styloa</user><email>support@craftyclicks.co.uk</email></author></authors>
+    <date>2014-09-01</date>
+    <time>12:52:38</time>
+    <contents><target name="mage"><dir name="app"><dir name="etc"><dir name="modules"><file name="CraftyClicksValidate.xml" hash="cb665e10c0f96742f62a0225eeb010d7"/></dir></dir><dir name="code"><dir name="local"><dir name="CraftyClicksValidate"><dir><dir name="Helper"><file name="Data.php" hash="a96df9efe70446493039881397aa37bf"/></dir><dir name="controllers"><file name="AjaxController.php" hash="3fe1c79849d1efbca1268dcad12f0baa"/></dir><dir name="etc"><file name="config.xml" hash="0b14073288fae9c4421e0893f3f481dc"/><file name="system.xml" hash="e0932e8c5838d5a8855ffb4dd33560cd"/></dir></dir></dir></dir></dir><dir name="design"><dir name="frontend"><dir name="base"><dir name="default"><dir name="layout"><file name="craftyclicks_validate.xml" hash="20bb120782c6b81b71538acf2e2840ff"/></dir><dir name="template"><dir name="craftyclicksvalidate"><file name="post_checkout.phtml" hash="e3deac92126ac76b5473508348c89afb"/></dir></dir></dir></dir></dir></dir></dir><dir name="skin"><dir name="frontend"><dir name="base"><dir name="default"><dir name="css"><dir name="craftyclicksvalidate"><file name="validate.css" hash="353e6e8267ce0a7fccad15bc1d1418cd"/><file name="validate_old.css" hash="3a4dd9986bdf93462afb0c6a20ac838e"/></dir></dir><dir name="images"><dir name="craftyclicksvalidate"><file name="crafty_validate_busy.gif" hash="7660c91e294e91f80219d3c8f6512dca"/></dir></dir></dir></dir></dir></dir></target></contents>
+    <compatible/>
+    <dependencies><required><php><min>4.0.0</min><max>6.0.0</max></php></required></dependencies>
+</package>
