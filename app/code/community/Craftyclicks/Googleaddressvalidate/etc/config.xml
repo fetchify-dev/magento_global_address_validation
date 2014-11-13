@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Crafty Clicks - Google Address Validate
+ *
+ * @category   CraftyClicks
+ * @package    CraftyClicks
+ * @copyright  CraftyClicks.co.uk
+ */
+-->
+
+<config>
+	<modules>
+		<Craftyclicks_Googleaddressvalidate>
+			<version>0.2.0</version>
+		</Craftyclicks_Googleaddressvalidate>
+	</modules>
+
+	<global>		
+		<helpers>
+			<googleaddressvalidate>
+				<class>Craftyclicks_Googleaddressvalidate_Helper</class>
+			</googleaddressvalidate>
+		</helpers>		
+	</global>
+
+	<default>
+		<googleaddressvalidate>
+			<general>
+				<active>0</active>
+				<loading_image></loading_image>
+				<title>Is your address correct?</title>
+				<description_1>We think there's an issue with your delivery address. Please review it.</description_1>
+				<description_2>If you think the address is correct, please ignore this message.</description_2>
+				<finish_text>Thank you! We updated your shipping address.</finish_text>
+				<gmaps>1</gmaps>
+				<region_dropdown>0</region_dropdown>
+			</general>
+		</googleaddressvalidate>
+	</default>
+	
+	<frontend>
+		<layout>
+			<updates>
+				<craftyclicks_googleaddressvalidate module="Craftyclicks_Googleaddressvalidate">
+					<file>craftyclicks_googleaddressvalidate.xml</file>
+				</craftyclicks_googleaddressvalidate>
+			</updates>
+		</layout>
+		<routers>
+			<googleaddressvalidate>
+				<use>standard</use>
+				<args>
+					<module>Craftyclicks_Googleaddressvalidate</module>
+					<frontName>googleaddressvalidate</frontName>
+				</args>
+			</googleaddressvalidate>
+		</routers>
+	</frontend>	
+
+	<adminhtml>
+		<acl>
+			<resources>
+				<all>
+					<title>Allow Everything</title>
+				</all>
+				<admin>
+					<children>
+						<system>
+							<children>
+								<config>
+									<children>
+										<googleaddressvalidate translate="title" module="googleaddressvalidate">
+											<title>googleaddressvalidate - All</title>
+										</googleaddressvalidate>
+									</children>
+								</config>
+							</children>
+						</system>
+					</children>
+				</admin>
+			</resources>
+		</acl>
+	</adminhtml>
+
+	<global>
+		<resources>
+			<craftyclicks_googleaddressvalidate_setup>
+				<setup>
+					<module>Craftyclicks_Googleaddressvalidate</module>
+				</setup>
+			</craftyclicks_googleaddressvalidate_setup>
+		</resources>
+	</global>	
+
+</config>

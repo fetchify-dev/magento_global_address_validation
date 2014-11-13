@@ -11,13 +11,13 @@
 
 <layout>
 	<!-- Ajax Time -->
-	<craftyclicksvalidate_ajax_index>
-		<block type="craftyclicksvalidate/ajaxblock" name="root" template="path/template.phtml" />
-	</craftyclicksvalidate_ajax_index>
+	<googleaddressvalidate_ajax_index>
+		<block type="googleaddressvalidate/ajaxblock" name="root" template="path/template.phtml" />
+	</googleaddressvalidate_ajax_index>
 
 	<checkout_onepage_success>
 		<reference name="head">
-			<block type="page/html" name="craftyclicks_postcheck" template="craftyclicksvalidate/post_checkout.phtml"/>	
+			<block type="page/html" name="craftyclicks_postcheck" template="craftyclicks/googleaddressvalidate/post_checkout.phtml"/>
 		</reference>
 	</checkout_onepage_success>
 </layout>

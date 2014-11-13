@@ -1,0 +1,347 @@
+<?php
+$orderId = Mage::getSingleton('checkout/session')->getLastRealOrderId();
+$order = Mage::getSingleton('sales/order')->loadByIncrementId($orderId);
+
+$shippingAddress = Mage::getModel('sales/order_address')->load($order->shipping_address_id);
+
+$confG = Mage::getStoreConfig('googleaddressvalidate/general');
+$confC = Mage::getStoreConfig('clicktoaddress/general');
+$confO = Mage::getStoreConfig('general/craftyclicks');
+
+// if the new config path of cc isn't set, try to get the cc plugin vars from the old cfg.
+if(!isset($confC['active']) && isset($confO['active'])){
+	$confC = $confO;
+}
+
+if($confG['active'] && !($shippingAddress->country_id == 'GB' && 1 == $confC['active']) ):
+	echo '<link rel="stylesheet" type="text/css" href="'.$this->getSkinUrl('css/craftyclicks/googleaddressvalidate/validate.css').'">'; ?>
+
+	<div style="display: none;" id="hidden-correction">
+		<div>
+			<h1>
+				<?php echo $confG['title']; ?>
+			</h1>
+			<div>
+				<?php echo $confG['description_1']; ?>
+				</br>
+				<?php echo $confG['description_2']; ?>
+			</div>
+
+			<div id="crafty-correct">
+				<span class="correct-title">Suggestions:</span>
+				<ul>
+					<li class="manual">
+						<input type="radio" name="option" checked>
+						<span>Manual Correction:</span></br>
+						<div class="field">
+							<label for="address">Address:</label>
+							<div class="input-box">
+								<input type="text" class="crafty-input" id="address"/>
+							</div>
+						</div>
+						<div class="field">
+							<label for="town">Town:</label>
+							<div class="input-box">
+								<input type="text" class="crafty-input" id="town"/>
+							</div>
+						</div>
+						<div class="field"><label for="postcode">Postcode:</label>
+							<div class="input-box">
+								<input type="text" class="crafty-input" id="postcode"/>
+							</div>
+						</div>
+						<div class="field">
+							<label for="region">Region:</label>
+							<div class="input-box">
+								<input type="text" class="crafty-input" id="region"/>
+								<select id="region_id" name="region_id" class="crafty-input">					                            
+									<?php
+									if(!$confG['region_dropdown']){
+										$states = Mage::getModel('directory/country')->load($shippingAddress->country_id)->getRegions()->toOptionArray();
+										foreach($states as $region)
+										{
+											echo "<option value=$region[value]>".$region['title'] . "</option>";
+										}
+									}
+									?>
+								</select>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		
+		<button class="button" id="button-crafty-modify">Update</button>
+
+		<div id="crafty-maps-holder"></div>
+					
+		</div>
+	</div>
+	<script src="//maps.google.com/maps/api/js?sensor=false"></script>
+	<script type="text/javascript">
+
+	<?php
+	if($confG['gmaps']):
+	?>
+		function initialize_gmaps(x,y) {
+			var map_canvas = document.getElementById('crafty-maps-holder');
+			var map_options = {
+				center: new google.maps.LatLng(x,y),
+				zoom: 16,
+				mapTypeId: google.maps.MapTypeId.ROADMAP
+			}
+			var map = new google.maps.Map(map_canvas, map_options);
+		}
+	<?php
+	endif;
+
+	echo "var shipping = '" . json_encode ($shippingAddress->_data) . "'.evalJSON();";
+
+	?>
+
+	function check_match(infoHolder,original){
+		var flag = true;
+
+		if(typeof infoHolder.town !== "undefined" && original.town.toLowerCase() != infoHolder.town.toLowerCase())
+			flag = false;
+		if(typeof infoHolder.postal_code !== "undefined" && original.postal_code.toLowerCase() != infoHolder.postal_code.toLowerCase())
+			flag = false;
+		if(typeof infoHolder.address !== "undefined" && original_address.toLowerCase().indexOf(infoHolder.combined_street.toLowerCase()) == -1)
+			flag = false;
+		
+		if(typeof infoHolder.country !== "undefined" && original.country.toLowerCase() != infoHolder.country.short_name.toLowerCase())
+			flag = false;
+
+		return flag;
+	}
+
+	document.observe('dom:loaded', function() {
+		<?php
+		$loading_image = $confG['loading_image'];
+		if($loading_image == ''){
+			$loading_image = 'crafty_validate_busy.gif';
+		}
+		$loading_image = $this->getSkinUrl('images/craftyclicks/googleaddressvalidate/'.$loading_image);
+		?>
+		// check if google CDN loaded properly
+		if(typeof google !== "undefined"){
+
+			var html = '<div class="buttons-set" id="correct_box"><img style="margin: auto;" src="<?php echo $loading_image; ?>"/></div>';
+			
+			$$('.buttons-set')[0].insert({before :html});
+
+
+			var address = shipping.street+" "+shipping.postcode+" "+shipping.city+" "+shipping.country_id;
+
+			var geocoder = new google.maps.Geocoder();
+
+			var original = new Object();
+
+			original.street = shipping.street.toLowerCase();
+			original.postalcode = shipping.postcode.toLowerCase();
+			original.city = shipping.city.toLowerCase();
+
+
+			var suggestions = new Array();
+			var data = new Array();
+
+			if (geocoder) {
+				geocoder.geocode({ 'address': address }, function (results, status) {
+					var doCheck = false;
+					//if gmaps fails to locate, then we have some super bogus address.
+					if (status == google.maps.GeocoderStatus.OK) {
+						//parse gmaps data into some more useable format.
+						for(var i = 0; i< results.length; i++ ){
+							data.push(getDataFromMaps(results[i]));
+						}
+
+						//first hit on gmaps is the best find; check if it's premise level.
+						if(typeof data[0].country !== "undefined" && typeof data[0].locality  !== "undefined" && typeof data[0].postal_code !== "undefined" &&	typeof data[0].route !== "undefined" && typeof data[0].street_number !== "undefined"){
+
+							var mapsaddress = new Object();
+
+							//figure out the correct order of housenumber / street.
+							if(data[0].formatted.indexOf(data[0].route) > data[0].formatted.indexOf(data[0].street_number))
+								mapsaddress.street = data[0].street_number.long_name.toLowerCase() + " " + data[0].route.long_name.toLowerCase();
+							else						
+								mapsaddress.street = data[0].route.long_name.toLowerCase() + " " + data[0].street_number.long_name.toLowerCase();
+
+							mapsaddress.postalcode = data[0].postal_code.long_name.toLowerCase();
+							mapsaddress.city = data[0].locality.long_name.toLowerCase();
+
+							var old_country_id = shipping.country_id.toLowerCase();
+
+							if(old_country_id == data[0].country.long_name.toLowerCase() || old_country_id == data[0].country.short_name.toLowerCase()){
+								//if countries match AND premise level do not match:
+								if(JSON.stringify(mapsaddress) != JSON.stringify(original)){
+									doCheck = true;
+								}
+								else {
+									//everything matches, remove the validation div. (valid address)
+									$('correct_box').remove();
+								}
+							} else {
+								doCheck = true;
+							}
+
+						} else {
+							doCheck = true;
+							//not premise level
+						}
+
+					}
+					else {
+						//super bogus data
+						doCheck = true;
+					}
+
+					if(doCheck){
+
+						$('correct_box').update($('hidden-correction').innerHTML);
+						$('hidden-correction').remove();
+
+						initialize_gmaps(results[0].geometry.location.lat(), results[0].geometry.location.lng());
+
+						$('address').value = shipping.street;
+						$('town').value = shipping.city;
+						$('postcode').value = shipping.postcode;
+						var country = shipping.country_id;
+						if($('region_id').childElements('option').length){
+							$('region').hide();
+
+							var options = $$('select#region_id option');
+							var len = options.length;
+							for (var i = 0; i < len; i++) {
+							    if(options[i].value == shipping.region_id){
+							    	options[i].selected = true;
+							    }
+							}
+							//$('region_id')[shipping.region_id].selected = true;
+						} else {
+							$('region_id').hide();
+							$('region').value = shipping.region;
+						}
+						
+						data.forEach(function(element){
+							// if the data provided is premise level
+							if(typeof element.route !== "undefined" && typeof element.street_number !== "undefined"){
+								var address = '';					
+
+								var region = '';
+								if(typeof element.administrative_area_level_1 !== "undefined"){
+									region = element.administrative_area_level_1.long_name;
+								}
+
+								var postal_code = '';
+								if(typeof element.postal_code !== "undefined"){
+									postal_code = element.postal_code.long_name;
+								}
+
+								var locality = '';
+								if(typeof element.locality !== "undefined"){
+									locality = element.locality.long_name;
+								}
+
+								var route = '';
+								if(typeof element.route !== "undefined"){
+									route = element.route.long_name;
+								}
+
+								var street_number = '';
+								if(typeof element.street_number !== "undefined"){
+									street_number = element.street_number.long_name;
+								}
+								if(element.formatted.indexOf(route) > element.formatted.indexOf(street_number))
+									address = street_number + " " + route;
+								else						
+									address = route + " " + street_number;
+
+
+								var combined_address = address;
+								if(combined_address != '' && locality != ''){
+									combined_address += ', '+locality;
+								}
+								if(combined_address != '' && postal_code != ''){
+									combined_address += ', '+postal_code;
+								}
+								if(combined_address != '' && region != ''){
+									combined_address += ', '+region;
+								}
+
+								var html = '<li data-region="'+region+'" data-postcode="'+postal_code+'" data-town="'+locality+'" data-street="'+ address +'"><input type="radio" class="" name="option"><span>' + combined_address +'</span></li>';
+								$('crafty-correct').down('ul').insert({top : html});
+							}
+						});
+						//if we click on any suggestion, disable manual input
+						$$('#crafty-correct li:not(.manual) input').each(function(elem){
+							elem.observe('click',function(){
+								$$('.crafty-input').each(function(elem){
+									elem.disable();
+								});
+							});
+						});
+						//if we click on manual correct, enable manual input
+						$$('#crafty-correct li.manual input')[0].observe('click',function(){
+							$$('.crafty-input').each(function(elem){
+								elem.enable();
+							});
+						});
+						//when we press the update button
+						$('button-crafty-modify').observe('click',function(){
+							//check if a suggestion is selected
+							var elem = $$('#crafty-correct li:not(.manual) input[type=radio]:checked');
+							if(elem.length == 1){
+								//gather all data and copy it to the form.
+								var li = elem[0].up('li');
+								$('address').value = li.readAttribute('data-street');
+								$('town').value = li.readAttribute('data-town');
+								$('postcode').value = li.readAttribute('data-postcode');
+								$('region').value = li.readAttribute('data-region');
+							} else {
+								//if it's manual & region dropdown is provided, copy the selected region value to the region form element.
+								if($('region_id').childElements('option').length){
+									$('region').value = $('region_id').options[$('region_id').selectedIndex].innerHTML;
+								}
+							}
+							// pass all form values to an ajax request & update.
+							new Ajax.Request('<?php echo Mage::getUrl('googleaddressvalidate/ajax/update');?>',
+							{
+								method:'get',
+								parameters: {
+									street: $('address').getValue(),
+									city: $('town').getValue(),
+									postcode: $('postcode').getValue(),
+									region: $('region').getValue()
+								},
+								onSuccess: function(transport){
+									$('correct_box').update('<?php echo addslashes($confG['finish_text']); ?>');
+								}
+							});
+						});
+					
+					}
+				});
+			}
+		}
+
+	} );
+
+	function getDataFromMaps(element){
+		var output = new Array();
+		element.address_components.forEach(function(inner_element, index2, array2){
+			output[inner_element.types[0]] = new Object();
+			output[inner_element.types[0]].long_name = inner_element.long_name;
+			output[inner_element.types[0]].short_name = inner_element.short_name;
+		});
+		var result = new Object();
+		result = output;
+		result.formatted = element.formatted_address;
+		return result;
+
+	}
+
+	</script>
+
+<?php
+endif;
+?>

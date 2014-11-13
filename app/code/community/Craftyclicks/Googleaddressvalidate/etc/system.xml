@@ -1,15 +1,29 @@
 <?xml version="1.0"?>
-
 <config>
+	<tabs>
+		<craftyclicks translate="label" module="googleaddressvalidate">
+			<label><![CDATA[<img style="margin: 4px 4px 4px 0px;" src="https://craftyclicks.co.uk/assets/magento/crafty-logo.png" alt="Crafty Clicks" border="0" />]]></label>
+			<sort_order>101</sort_order>
+		</craftyclicks>
+	</tabs>
+
 	<sections>
-		<general>
+		<googleaddressvalidate translate="label" module="googleaddressvalidate">
+			<label>Google Address Validate</label>
+			<tab>craftyclicks</tab>
+			<sort_order>300</sort_order>
+			<show_in_default>1</show_in_default>
+			<show_in_website>1</show_in_website>
+			<show_in_store>1</show_in_store>
+
 			<groups>
-				<craftyclicksvalidate translate="label" module="craftyclicksvalidate">
-					<label>Crafty Clicks - Address Validate</label>
+				<general translate="label" module="googleaddressvalidate">
+					<label>Crafty Clicks - Google Address Validate</label>
+					<frontend_type>text</frontend_type>
 					<sort_order>124</sort_order>
 					<show_in_default>1</show_in_default>
 					<show_in_website>1</show_in_website>
-					<show_in_store>0</show_in_store>
+					<show_in_store>1</show_in_store>
 					<fields>
 						<active translate="label">
 							<label>Enabled</label>
@@ -18,7 +32,7 @@
 							<sort_order>1</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
-							<show_in_store>0</show_in_store>
+							<show_in_store>1</show_in_store>
 						</active>
 
 						<loading_image translate="label">
@@ -27,7 +41,7 @@
 							<sort_order>12</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
-							<show_in_store>0</show_in_store>
+							<show_in_store>1</show_in_store>
 							<comment>Here you can enter an image file name to use as the loading image while the address validation is working.</comment>
 						</loading_image>
 
@@ -37,7 +51,7 @@
 							<sort_order>35</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
-							<show_in_store>0</show_in_store>
+							<show_in_store>1</show_in_store>
 							<comment>Title of the block.</comment>
 						</title>
 
@@ -47,7 +61,7 @@
 							<sort_order>36</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
-							<show_in_store>0</show_in_store>
+							<show_in_store>1</show_in_store>
 							<comment>Description of the block.</comment>
 						</description_1>
 
@@ -57,7 +71,7 @@
 							<sort_order>37</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
-							<show_in_store>0</show_in_store>
+							<show_in_store>1</show_in_store>
 							<comment>Sub-Description of the block.</comment>
 						</description_2>
 
@@ -67,7 +81,7 @@
 							<sort_order>38</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
-							<show_in_store>0</show_in_store>
+							<show_in_store>1</show_in_store>
 							<comment>Text after successful update.</comment>
 						</finish_text>
 
@@ -78,7 +92,7 @@
 							<sort_order>40</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
-							<show_in_store>0</show_in_store>
+							<show_in_store>1</show_in_store>
 							<comment>Display Google Maps. Required for free licensing.</comment>
 						</gmaps>
 
@@ -89,14 +103,13 @@
 							<sort_order>39</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
-							<show_in_store>0</show_in_store>
+							<show_in_store>1</show_in_store>
 							<comment>Allow manual region entry of custom regions.</comment>
 						</region_dropdown>
 
 					</fields>
-                    <comment><![CDATA[<a href="http://www.craftyclicks.co.uk" target="_blank">Uk postcode lookup is also available on our website!</a>]]></comment>
-				</craftyclicksvalidate>
+				</general>
 			</groups>
-		</general>
+		</googleaddressvalidate>
 	</sections>
 </config>

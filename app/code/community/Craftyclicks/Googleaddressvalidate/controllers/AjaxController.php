@@ -1,6 +1,5 @@
 <?php
-class CraftyClicksValidate_AjaxController extends Mage_Core_Controller_Front_Action{
-
+class Craftyclicks_Googleaddressvalidate_AjaxController extends Mage_Core_Controller_Front_Action{
 	public function updateAction(){
 		$order_id = Mage::getSingleton('checkout/session')->getLastRealOrderId();
 		//$_GET["order_id"];
